@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Agenda;
+use App\User;
+use Auth;
 class AgendaController extends Controller
 {
     /**
@@ -46,6 +48,8 @@ class AgendaController extends Controller
             'date_time_end' => 'required',
 
         ]);
+        $user = Auth::user();
+        $validatedData['user_id'] = $user->id;
         $show = Agenda::create($validatedData);
         return redirect('/agendas')->with('success', 'Evento adicionado com sucesso!');
     }
@@ -89,6 +93,10 @@ class AgendaController extends Controller
             'date_time_start' => 'required',
             'date_time_end' => 'required',
         ]);
+
+        $user = Auth::user();
+        $validatedData['user_id'] = $user->id;
+
         Agenda::whereId($id)->update($validatedData);
         return redirect('/agendas')->with('success', 'O evento foi atualizado com sucesso!');
     }
